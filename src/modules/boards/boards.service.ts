@@ -17,11 +17,23 @@ export class BoardsService {
     private readonly datastore: Datastore,
   ) {}
 
-  findAll(params: {
+  async findAll(params: {
+    userId?: string;
     pagination?: PaginationDto;
     filters?: FilterBoardDto;
   }) {
-    return this.boardsDao.findAll(params);
+    const user = params.userId ? await this.usersDao.findAll({
+      filters: {
+        ids: [params.userId],
+      }
+    }) : null;
+    return this.boardsDao.findAll({
+      filters: {
+        ...params.filters,
+        ids: user ? user.items[0].getBoards() : undefined,
+      },
+      pagination: params.pagination
+    });
   }
 
   async create(

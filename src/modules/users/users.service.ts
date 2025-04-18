@@ -1,6 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { PaginationDto } from 'src/core/dtos/pagination.dto';
 import { FilterUserDto } from './dto/filter-user.dto';
 import { UsersDao } from './users.dao';
@@ -57,7 +56,6 @@ export class UsersService {
     const userTokenModel = new UserTokenModel({
       expiresAt,
       id: userFound.getId(),
-      boards: userFound.getBoards(),
     });
     const token = TokenUtils.generateToken(userTokenModel);
 

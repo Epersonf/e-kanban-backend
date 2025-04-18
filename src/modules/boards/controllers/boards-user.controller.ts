@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Req, HttpException } from '@nestjs/common';
 import { BatchCreateBoardDto } from '../dto/create-board.dto';
 import { BoardsService } from '../boards.service';
 import { BatchUpdateBoardDto } from '../dto/update-board.dto';
@@ -20,15 +20,13 @@ export class BoardsUserController {
   findAll(
     @Query() pagination: PaginationDto,
     @Query() filters: FilterBoardDto,
-    @Req() req: Request
+    @Req() req: Request,
   ): Promise<PaginatedListDto<Board>> {
     const user = req.headers['user'] as UserTokenModel;
     return this.boardsService.findAll({
+      userId: user.id,
       pagination,
-      filters: {
-        ...filters,
-        ids: user.boards,
-      },
+      filters: filters,
     });
   }
 

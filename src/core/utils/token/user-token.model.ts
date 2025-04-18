@@ -6,19 +6,14 @@ export class UserTokenModel {
   id: string;
 
   @JsonProperty()
-  boards: string[];
-
-  @JsonProperty()
   expiresAt: number;
 
   constructor(params: {
     id: string;
-    boards: string[];
     expiresAt: number,
   }) {
     if (!params) return;
     this.id = params.id;
-    this.boards = params.boards;
     this.expiresAt = params.expiresAt;
   }
 
