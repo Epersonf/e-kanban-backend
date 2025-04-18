@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 
 export class FilterBoardDto {
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   ids?: string[];
 
 }

@@ -16,6 +16,7 @@ export class UserTokenModel {
     boards: string[];
     expiresAt: number,
   }) {
+    if (!params) return;
     this.id = params.id;
     this.boards = params.boards;
     this.expiresAt = params.expiresAt;
