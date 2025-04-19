@@ -1,19 +1,17 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { BatchCreateBoardDto, CreateBoardDto } from './dto/create-board.dto';
-import { BatchUpdateBoardDto, UpdateBoardDto } from './dto/update-board.dto';
+import { BatchCreateBoardDto } from './dto/create-board.dto';
+import { BatchUpdateBoardDto } from './dto/update-board.dto';
 import { FilterBoardDto } from './dto/filter-board.dto';
 import { PaginationDto } from 'src/core/dtos/pagination.dto';
 import { BoardsDao } from './boards.dao';
 import { Board } from './entities/board.entity';
-import { UsersDao } from '../users/users.dao';
-import { Datastore, Transaction } from '@google-cloud/datastore';
+import { Datastore } from '@google-cloud/datastore';
 
 @Injectable()
 export class BoardsService {
 
   constructor(
     private readonly boardsDao: BoardsDao,
-    private readonly usersDao: UsersDao,
     private readonly datastore: Datastore,
   ) {}
 
@@ -22,15 +20,10 @@ export class BoardsService {
     pagination?: PaginationDto;
     filters?: FilterBoardDto;
   }) {
-    const user = params.userId ? await this.usersDao.findAll({
-      filters: {
-        ids: [params.userId],
-      }
-    }) : null;
     return this.boardsDao.findAll({
       filters: {
         ...params.filters,
-        ids: user ? user.items[0].getBoards() : undefined,
+        memberId: params.userId,
       },
       pagination: params.pagination
     });
@@ -40,41 +33,17 @@ export class BoardsService {
     creatorId: string,
     batchCreateBoardDto: BatchCreateBoardDto,
   ) {
-    const transaction = this.datastore.transaction();
-    try {
+    const entities = batchCreateBoardDto.boards.map(createBoardDto => new Board({
+      name: createBoardDto.name,
+      description: createBoardDto.description,
+      memberIds: [creatorId],
+    }));
+    
+    const board = await this.boardsDao.create({
+      entities,
+    });
 
-      const entities = batchCreateBoardDto.boards.map(createBoardDto => new Board({
-        name: createBoardDto.name,
-        description: createBoardDto.description,
-      }));
-      
-      const [ creatorList, board ] = await Promise.all([
-        this.usersDao.findAll({
-          filters: {
-            ids: [creatorId],
-          }
-        }),
-        this.boardsDao.create({
-          entities,
-          transaction,
-        })
-      ]);
-      
-      const creator = creatorList.items[0];
-      creator.addToBoard(board[0].getId());
-
-      await this.usersDao.update({
-        entities: [creator],
-        transaction,
-      });
-
-      await transaction.commit();
-
-      return board;
-    } catch (error) {
-      transaction.rollback();
-      throw error;
-    }
+    return board;
   }
 
   async update(batchUpdateBoardDto: BatchUpdateBoardDto) {

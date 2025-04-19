@@ -4,7 +4,7 @@ import { Board } from "./entities/board.entity";
 import { FilterBoardDto } from "./dto/filter-board.dto";
 import { PaginationDto } from "src/core/dtos/pagination.dto";
 import { PaginatedListDto } from "src/core/dtos/paginated-list.dto";
-import { Datastore, Query } from "@google-cloud/datastore";
+import { Datastore, PropertyFilter, Query } from "@google-cloud/datastore";
 
 @Injectable()
 export class BoardsDao extends BaseDao<Board> {
@@ -20,10 +20,13 @@ export class BoardsDao extends BaseDao<Board> {
   }): Promise<PaginatedListDto<Board>> {
     return super.findAll({
       ...params,
-      filterIdsAction: (_: Board) => {
+      filterIdsAction: (entity: Board) => {
+        if (params.filters?.memberId && !entity.getMemberIds().includes(params.filters.memberId)) return false;
         return true;
       },
-      queryFilterAction: (_: Query) => {}
+      queryFilterAction: (query: Query) => {
+        if (params.filters?.memberId) query.filter(new PropertyFilter("memberIds", "IN", [params.filters.memberId]));
+      }
     });
   }
 }

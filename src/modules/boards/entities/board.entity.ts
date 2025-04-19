@@ -14,6 +14,10 @@ export class Board extends EntityMutable {
   private description?: string;
 
   @JsonProperty()
+  @ApiProperty()
+  private memberIds?: string[];
+
+  @JsonProperty()
   @ApiProperty({ type: [User] })
   private members?: User[] = undefined;
 
@@ -21,12 +25,14 @@ export class Board extends EntityMutable {
     id?: string;
     name: string;
     description?: string;
+    memberIds?: string[];
     members?: User[];
   }) {
     super(params);
     if (!params) return;
     this.name = params.name;
     this.description = params.description;
+    this.memberIds = params.memberIds;
     this.members = params.members;
   }
 
@@ -40,7 +46,11 @@ export class Board extends EntityMutable {
     this.description = description;
     return this;
   }
+  public getMemberIds(): string[] | undefined { return this.memberIds; }
   public getMembers(): User[] { return this.members; }
   
   public setMembers(members: User[]) { this.members = members; }
+
+  public addToBoard(userId: string) { this.memberIds?.push(userId); }
+  public removeFromBoard(userId: string) { this.memberIds?.splice(this.memberIds.indexOf(userId), 1); }
 }
