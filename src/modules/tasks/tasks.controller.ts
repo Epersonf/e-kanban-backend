@@ -17,22 +17,6 @@ export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
   @Auth()
-  @Get()
-  @ApiResponse({ status: 200, type: PaginatedListDto })
-  findAll(
-    @Query() pagination: PaginationDto,
-    @Query() filters: FilterTaskDto,
-    @Req() req: Request,
-  ): Promise<PaginatedListDto<Task>> {
-    const user = req.headers['user'] as UserTokenModel;
-    return this.tasksService.findAll({
-      userId: user.id,
-      pagination,
-      filters,
-    });
-  }
-
-  @Auth()
   @Post()
   @ApiResponse({ status: 201, type: [Task] })
   create(@Body() batchCreateTaskDto: BatchCreateTaskDto, @Req() req: Request): Promise<Task[]> {
