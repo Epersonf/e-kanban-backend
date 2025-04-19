@@ -57,6 +57,7 @@ export class BoardsService {
       const updateBoardDto = batchUpdateBoardDto.boards.find(updateBoardDto => updateBoardDto.id === board.getId());
       if (updateBoardDto.name) board.setName(updateBoardDto.name);
       if (updateBoardDto.description) board.setDescription(updateBoardDto.description);
+      board.update();
     });
 
     return this.boardsDao.update({
