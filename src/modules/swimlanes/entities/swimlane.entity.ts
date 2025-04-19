@@ -18,7 +18,7 @@ export class Swimlane extends EntityMutable {
   @ApiProperty()
   private order: number;
 
-  @ApiProperty()
+  @ApiProperty({ type: [Task] })
   private tasks?: Task[];
 
   constructor(params: {
