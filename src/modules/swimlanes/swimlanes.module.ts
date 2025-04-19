@@ -8,5 +8,6 @@ import { TasksModule } from '../tasks/tasks.module';
   imports: [TasksModule],
   controllers: [SwimlanesController],
   providers: [SwimlanesService, SwimlanesDao],
+  exports: [SwimlanesService],
 })
 export class SwimlanesModule {}
