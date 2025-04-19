@@ -1,11 +1,11 @@
 import { Controller, Get, Post, Body, Patch, Delete, Query, Req } from '@nestjs/common';
-import { TasksService } from './tasks.service';
-import { BatchCreateTaskDto } from './dtos/create-task.dto';
-import { BatchUpdateTaskDto } from './dtos/update-task.dto';
-import { FilterTaskDto } from './dtos/filter-task.dto';
+import { TasksService } from '../tasks.service';
+import { BatchCreateTaskDto } from '../dtos/create-task.dto';
+import { BatchUpdateTaskDto } from '../dtos/update-task.dto';
+import { FilterTaskDto } from '../dtos/filter-task.dto';
 import { PaginationDto } from 'src/core/dtos/pagination.dto';
 import { PaginatedListDto } from 'src/core/dtos/paginated-list.dto';
-import { Task } from './entities/task.entity';
+import { Task } from '../entities/task.entity';
 import { DeleteDto } from 'src/core/dtos/delete.dto';
 import { Auth } from 'src/core/middlewares/user-validation/user-validation.decorator';
 import { UserTokenModel } from 'src/core/utils/token/user-token.model';

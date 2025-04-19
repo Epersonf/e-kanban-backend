@@ -10,7 +10,7 @@ import { SwimlanesService } from '../swimlanes.service';
 import { BatchCreateSwimlaneDto } from '../dto/create-swimlane.dto';
 import { BatchUpdateSwimlaneDto } from '../dto/update-swimlane.dto';
 
-@Controller('swimlanes')
+@Controller('swimlanes/user')
 export class SwimlanesController {
   constructor(private readonly swimlanesService: SwimlanesService) {}
 
