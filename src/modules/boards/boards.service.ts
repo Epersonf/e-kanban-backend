@@ -5,14 +5,12 @@ import { FilterBoardDto } from './dto/filter-board.dto';
 import { PaginationDto } from 'src/core/dtos/pagination.dto';
 import { BoardsDao } from './boards.dao';
 import { Board } from './entities/board.entity';
-import { Datastore } from '@google-cloud/datastore';
 
 @Injectable()
 export class BoardsService {
 
   constructor(
     private readonly boardsDao: BoardsDao,
-    private readonly datastore: Datastore,
   ) {}
 
   async findAll(params: {
