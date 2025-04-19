@@ -36,7 +36,10 @@ export class BoardsService {
       const swimlanes = await this.swimlanesService.findAll({
         filters: {
           boardIds: boardsPage.items.map(board => board.getId()),
-        }
+        },
+        populate: {
+          populateWithTasks: true,
+        },
       });
       boardsPage.items.forEach(board => board.setSwimlanes(swimlanes.items.filter(swimlane => swimlane.getBoardId() === board.getId())));
     }
@@ -45,7 +48,7 @@ export class BoardsService {
       const members = await this.usersService.findAll({
         filters: {
           ids: boardsPage.items.flatMap(board => board.getMemberIds()),
-        }
+        },
       });
       boardsPage.items.forEach(board => board.setMembers(members.items.filter(member => board.getMemberIds().includes(member.getId()))));
     }
