@@ -4,6 +4,7 @@ import { TasksController } from './controllers/tasks-user.controller';
 import { TasksDao } from './tasks.dao';
 
 @Module({
+  exports: [TasksService],
   controllers: [TasksController],
   providers: [TasksService, TasksDao],
 })

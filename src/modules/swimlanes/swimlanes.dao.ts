@@ -21,11 +21,11 @@ export class SwimlanesDao extends BaseDao<Swimlane> {
     return super.findAll({
       ...params,
       filterIdsAction: (entity: Swimlane) => {
-        if (params.filters?.boardId && entity.getBoardId() !== params.filters.boardId) return false;
+        if (params.filters?.boardIds && params.filters.boardIds.includes(entity.getBoardId())) return false;
         return true;
       },
       queryFilterAction: (query: Query) => {
-        if (params.filters?.boardId) query.filter(new PropertyFilter("boardId", "=", params.filters.boardId));
+        if (params.filters?.boardIds) query.filter(new PropertyFilter("boardId", "IN", params.filters.boardIds));
       }
     });
   }

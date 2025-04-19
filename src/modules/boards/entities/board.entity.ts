@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { EntityMutable } from "src/core/common-models/mutable.entity";
+import { Swimlane } from "src/modules/swimlanes/entities/swimlane.entity";
 import { User } from "src/modules/users/entities/user.entity";
 import { JsonObject, JsonProperty } from "typescript-json-serializer";
 
@@ -17,9 +18,11 @@ export class Board extends EntityMutable {
   @ApiProperty()
   private memberIds?: string[];
 
-  @JsonProperty()
   @ApiProperty({ type: [User] })
   private members?: User[] = undefined;
+
+  @ApiProperty({ type: [Swimlane] })
+  private swimlanes?: Swimlane[];
 
   constructor(params: {
     id?: string;
@@ -27,6 +30,7 @@ export class Board extends EntityMutable {
     description?: string;
     memberIds?: string[];
     members?: User[];
+    swimlanes?: Swimlane[];
   }) {
     super(params);
     if (!params) return;
@@ -34,6 +38,7 @@ export class Board extends EntityMutable {
     this.description = params.description;
     this.memberIds = params.memberIds;
     this.members = params.members;
+    this.swimlanes = params.swimlanes;
   }
 
   public getName(): string { return this.name; }
@@ -48,6 +53,9 @@ export class Board extends EntityMutable {
   }
   public getMemberIds(): string[] | undefined { return this.memberIds; }
   public getMembers(): User[] { return this.members; }
+
+  public getSwimlanes(): Swimlane[] { return this.swimlanes; }
+  public setSwimlanes(swimlanes: Swimlane[]) { this.swimlanes = swimlanes; }
   
   public setMembers(members: User[]) { this.members = members; }
 

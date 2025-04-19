@@ -5,5 +5,5 @@ export class FilterSwimlaneDto {
   ids?: string[];
 
   @ApiProperty({ required: false })
-  boardId?: string;
+  boardIds?: string[];
 }

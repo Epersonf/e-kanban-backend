@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { SwimlanesService } from './swimlanes.service';
 import { SwimlanesController } from './controllers/swimlanes-user.controller';
 import { SwimlanesDao } from './swimlanes.dao';
-import { DatastoreModule } from 'src/core/utils/datastore.utils'; // Import DatastoreModule
+import { TasksModule } from '../tasks/tasks.module';
 
 @Module({
-  imports: [DatastoreModule], // Import DatastoreModule
+  imports: [TasksModule],
   controllers: [SwimlanesController],
-  providers: [SwimlanesService, SwimlanesDao], // Provide SwimlanesDao
+  providers: [SwimlanesService, SwimlanesDao],
 })
 export class SwimlanesModule {}

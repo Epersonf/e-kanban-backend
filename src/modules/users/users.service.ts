@@ -16,7 +16,7 @@ export class UsersService {
 
   findAll(params: {
     pagination?: PaginationDto,
-    filter?: FilterUserDto,
+    filters?: FilterUserDto,
   }) {
     return this.usersDao.findAll(params);
   }

@@ -10,6 +10,7 @@ import { DeleteDto } from 'src/core/dtos/delete.dto';
 import { Board } from '../entities/board.entity';
 import { PaginatedListDto } from 'src/core/dtos/paginated-list.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { PopulateBoardDto } from '../dto/populate-board.dto';
 
 @Controller('boards/user')
 @ApiTags('Boards')
@@ -22,13 +23,15 @@ export class BoardsUserController {
   findAll(
     @Query() pagination: PaginationDto,
     @Query() filters: FilterBoardDto,
+    @Query() populate: PopulateBoardDto,
     @Req() req: Request,
   ): Promise<PaginatedListDto<Board>> {
     const user = req.headers['user'] as UserTokenModel;
     return this.boardsService.findAll({
       userId: user.id,
       pagination,
-      filters: filters,
+      populate,
+      filters,
     });
   }
 

@@ -5,21 +5,39 @@ import { PaginationDto } from 'src/core/dtos/pagination.dto';
 import { Swimlane } from './entities/swimlane.entity';
 import { FilterSwimlaneDto } from './dto/filter-swimlane.dto';
 import { SwimlanesDao } from './swimlanes.dao';
+import { PopulateSwimlaneDto } from './dto/populate-swimlane.dto';
+import { TasksService } from '../tasks/tasks.service';
 
 @Injectable()
 export class SwimlanesService {
   constructor(
     private readonly swimlanesDao: SwimlanesDao,
+    private readonly tasksService: TasksService,
   ) {}
 
   async findAll(params: {
     pagination?: PaginationDto;
+    populate?: PopulateSwimlaneDto;
     filters?: FilterSwimlaneDto;
   }) {
-    return this.swimlanesDao.findAll({
+    const swimlanesPage = await this.swimlanesDao.findAll({
       filters: params.filters,
       pagination: params.pagination
     });
+    
+    if (params.populate?.populateWithTasks) {
+      const tasks = await this.tasksService.findAll({
+        filters: {
+          swimlaneIds: swimlanesPage.items.map(swimlane => swimlane.getId()),
+        }
+      });
+
+      swimlanesPage.items.forEach(swimlane => {
+        swimlane.setTasks(tasks.items.filter(task => task.getSwimlaneId() === swimlane.getId()));
+      });
+    }
+
+    return swimlanesPage;
   }
 
   async create(
