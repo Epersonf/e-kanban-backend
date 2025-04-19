@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import { EntityImmutable } from './immutable.entity';
 import { JsonObject, JsonProperty } from 'typescript-json-serializer';
 
@@ -5,8 +6,9 @@ import { JsonObject, JsonProperty } from 'typescript-json-serializer';
 export class EntityMutable extends EntityImmutable {
   @JsonProperty({
     beforeDeserialize: (property) => new Date(property).toISOString(),
-    beforeSerialize: () => Date.now(),
+    beforeSerialize: (property: Date) => property?.getTime(),
   })
+  @Transform(({ value }) => value?.getTime(), { toPlainOnly: true })
   private updatedAtUtc?: Date;
 
   constructor(params: {
