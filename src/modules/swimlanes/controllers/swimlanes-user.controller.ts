@@ -15,18 +15,6 @@ export class SwimlanesController {
   constructor(private readonly swimlanesService: SwimlanesService) {}
 
   @Auth()
-  @Get()
-  findAll(
-    @Query() pagination: PaginationDto,
-    @Query() filters: FilterSwimlaneDto,
-  ): Promise<PaginatedListDto<Swimlane>> {
-    return this.swimlanesService.findAll({
-      pagination,
-      filters,
-    });
-  }
-
-  @Auth()
   @Post()
   @ApiResponse({ status: 201, type: [Swimlane] })
   create(
