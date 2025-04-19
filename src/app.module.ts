@@ -3,6 +3,7 @@ import { UsersModule } from './modules/users/users.module';
 import { DatastoreModule } from './core/utils/datastore.utils';
 import { BoardsModule } from './modules/boards/boards.module';
 import { SwimlanesModule } from './modules/swimlanes/swimlanes.module';
+import { TasksModule } from './modules/tasks/tasks.module';
 
 @Module({
   imports: [
@@ -10,6 +11,7 @@ import { SwimlanesModule } from './modules/swimlanes/swimlanes.module';
     UsersModule,
     BoardsModule,
     SwimlanesModule,
+    TasksModule,
   ],
   controllers: [],
   providers: [],
