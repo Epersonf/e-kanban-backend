@@ -12,10 +12,6 @@ export class SwimlanesService {
     return `This action returns all swimlanes`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} swimlane`;
-  }
-
   update(id: number, updateSwimlaneDto: UpdateSwimlaneDto) {
     return `This action updates a #${id} swimlane`;
   }

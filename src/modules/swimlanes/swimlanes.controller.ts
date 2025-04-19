@@ -17,11 +17,6 @@ export class SwimlanesController {
     return this.swimlanesService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.swimlanesService.findOne(+id);
-  }
-
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateSwimlaneDto: UpdateSwimlaneDto) {
     return this.swimlanesService.update(+id, updateSwimlaneDto);
