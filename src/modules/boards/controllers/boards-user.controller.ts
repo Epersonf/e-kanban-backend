@@ -18,6 +18,7 @@ export class BoardsUserController {
 
   @Auth()
   @Get()
+  @ApiResponse({ status: 200, schema: PaginatedListDto.getSchema(Board) })
   findAll(
     @Query() pagination: PaginationDto,
     @Query() filters: FilterBoardDto,
