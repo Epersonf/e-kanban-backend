@@ -2,6 +2,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { Constants } from '../constants/constants';
 import { INestApplication } from '@nestjs/common';
 import { UserValidationAuthName } from '../middlewares/user-validation/user-validation.decorator';
+import * as fs from 'fs';
+import * as path from 'path';
 
 export class SwaggerUtils {
   static setupSwagger(app: INestApplication) {
@@ -16,8 +18,11 @@ export class SwaggerUtils {
       }, UserValidationAuthName)
       .build();
 
-    const documentFactory = () => SwaggerModule.createDocument(app, config);
+    const document = SwaggerModule.createDocument(app, config);
 
-    SwaggerModule.setup('api', app, documentFactory);
+    // const outputPath = path.resolve(process.cwd(), 'swagger.json');
+    // fs.writeFileSync(outputPath, JSON.stringify(document, null, 2));
+
+    SwaggerModule.setup('api', app, document);
   }
 }

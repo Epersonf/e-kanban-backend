@@ -29,15 +29,26 @@ export class UsersService {
     });
     if (existentUser.items.length > 0) throw new HttpException('User already exists', 400);
 
-    const newUser = await new User({
+    const user = await new User({
       name: createUserDto.name,
       email: createUserDto.email,
       password: createUserDto.password,
       surname: createUserDto.surname,
     }).hashPassword();
 
-    return this.usersDao.create({
-      entities: [newUser],
+    const expiresAt = new Date().getTime() + 3600 * 24 * 1000;
+
+    const userTokenModel = new UserTokenModel({
+      expiresAt,
+      id: user.getId(),
+    });
+
+    const token = TokenUtils.generateToken(userTokenModel);
+
+    return new LoginResponseDto({
+      expiresAt,
+      token,
+      user,
     });
   }
 
