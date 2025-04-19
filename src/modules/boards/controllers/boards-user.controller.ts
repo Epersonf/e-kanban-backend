@@ -9,9 +9,10 @@ import { UserTokenModel } from 'src/core/utils/token/user-token.model';
 import { DeleteDto } from 'src/core/dtos/delete.dto';
 import { Board } from '../entities/board.entity';
 import { PaginatedListDto } from 'src/core/dtos/paginated-list.dto';
-import { ApiResponse } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('boards/user')
+@ApiTags('Boards')
 export class BoardsUserController {
   constructor(private readonly boardsService: BoardsService) {}
 

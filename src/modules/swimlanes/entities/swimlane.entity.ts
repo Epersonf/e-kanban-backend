@@ -29,7 +29,10 @@ export class Swimlane extends EntityMutable {
   }
 
   public getBoardId(): string { return this.boardId; }
+  public setBoardId(boardId: string): Swimlane { this.boardId = boardId; return this; }
   public getName(): string { return this.name; }
+  public setName(name: string): Swimlane { this.name = name; return this; }
   public getOrder(): number { return this.order; }
+  public setOrder(order: number): Swimlane { this.order = order; return this; }
 
 }
