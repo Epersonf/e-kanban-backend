@@ -16,12 +16,16 @@ export class Task extends EntityMutable {
   @JsonProperty()
   private ownerIds: string[];
 
+  @JsonProperty()
+  private creatorId: string;
+
   constructor(params: {
     id?: string;
     swimlaneId: string;
     name: string;
     description: string;
     ownerIds?: string[];
+    creatorId: string;
     createdAtUtc?: Date;
     updatedAtUtc?: Date;
   }) {
@@ -31,6 +35,7 @@ export class Task extends EntityMutable {
     this.name = params.name;
     this.description = params.description;
     this.ownerIds = params.ownerIds ?? [];
+    this.creatorId = params.creatorId;
   }
 
   public getSwimlaneId(): string {
@@ -49,6 +54,10 @@ export class Task extends EntityMutable {
     return this.ownerIds;
   }
 
+  public getCreatorId(): string {
+    return this.creatorId;
+  }
+
   public setName(name: string): Task {
     this.name = name;
     return this;
@@ -65,6 +74,11 @@ export class Task extends EntityMutable {
 
   public setOwnerIds(ownerIds: string[]): Task {
     this.ownerIds = ownerIds;
+    return this;
+  }
+
+  public setCreatorId(creatorId: string): Task {
+    this.creatorId = creatorId;
     return this;
   }
 

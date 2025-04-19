@@ -14,5 +14,5 @@ export class BatchUpdateTaskDto {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => UpdateTaskDto)
-  Tasks: UpdateTaskDto[];
+  tasks: UpdateTaskDto[];
 }

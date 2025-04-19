@@ -3,6 +3,11 @@ import { Type } from "class-transformer";
 import { IsArray, IsString, Length, ValidateNested } from "class-validator";
 
 export class CreateTaskDto {
+
+  @ApiProperty()
+  @IsString()
+  swimlaneId: string;
+
   @ApiProperty()
   @IsString()
   @Length(1, 50)
@@ -19,5 +24,5 @@ export class BatchCreateTaskDto {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CreateTaskDto)
-  Tasks: CreateTaskDto[];
+  tasks: CreateTaskDto[];
 }
