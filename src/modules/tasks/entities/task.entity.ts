@@ -1,3 +1,4 @@
+import { ApiProperty } from "@nestjs/swagger";
 import { EntityMutable } from "src/core/common-models/mutable.entity";
 import { JsonObject, JsonProperty } from "typescript-json-serializer";
 
@@ -5,18 +6,23 @@ import { JsonObject, JsonProperty } from "typescript-json-serializer";
 export class Task extends EntityMutable {
 
   @JsonProperty()
+  @ApiProperty()
   private swimlaneId: string;
 
   @JsonProperty()
+  @ApiProperty()
   private name: string;
 
   @JsonProperty()
+  @ApiProperty()
   private description: string; // HTML content
 
   @JsonProperty()
+  @ApiProperty()
   private ownerIds: string[];
 
   @JsonProperty()
+  @ApiProperty()
   private creatorId: string;
 
   constructor(params: {

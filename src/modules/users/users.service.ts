@@ -36,6 +36,10 @@ export class UsersService {
       surname: createUserDto.surname,
     }).hashPassword();
 
+    await this.usersDao.create({
+      entities: [user],
+    });
+
     const expiresAt = new Date().getTime() + 3600 * 24 * 1000;
 
     const userTokenModel = new UserTokenModel({
