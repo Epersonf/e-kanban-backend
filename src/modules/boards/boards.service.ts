@@ -31,6 +31,7 @@ export class BoardsService {
       },
       pagination: params.pagination
     });
+    if (boardsPage.items.length === 0) return boardsPage;
 
     if (params.populate?.populateWithSwimlanes) {
       const swimlanes = await this.swimlanesService.findAll({
