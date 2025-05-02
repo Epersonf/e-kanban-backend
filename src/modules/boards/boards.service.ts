@@ -8,9 +8,12 @@ import { Board } from './entities/board.entity';
 import { PopulateBoardDto } from './dto/populate-board.dto';
 import { SwimlanesService } from '../swimlanes/swimlanes.service';
 import { UsersService } from '../users/users.service';
+import { Action } from 'src/core/delegate/action';
 
 @Injectable()
 export class BoardsService {
+
+  public static readonly onBoardUpdate = new Action<string[]>();
 
   constructor(
     private readonly boardsDao: BoardsDao,
@@ -89,6 +92,8 @@ export class BoardsService {
       if (updateBoardDto.description) board.setDescription(updateBoardDto.description);
       board.update();
     });
+
+    BoardsService.onBoardUpdate?.publish(entities.map(board => board.getId()));
 
     return this.boardsDao.update({
       entities,

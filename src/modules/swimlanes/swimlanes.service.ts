@@ -7,6 +7,7 @@ import { FilterSwimlaneDto } from './dto/filter-swimlane.dto';
 import { SwimlanesDao } from './swimlanes.dao';
 import { PopulateSwimlaneDto } from './dto/populate-swimlane.dto';
 import { TasksService } from '../tasks/tasks.service';
+import { BoardsService } from '../boards/boards.service';
 
 @Injectable()
 export class SwimlanesService {
@@ -72,6 +73,8 @@ export class SwimlanesService {
       if (updateSwimlaneDto.boardId) swimlane.setBoardId(updateSwimlaneDto.boardId);
       swimlane.update();
     });
+
+    BoardsService.onBoardUpdate?.publish(entities.map(swimlane => swimlane.getBoardId()));
 
     return this.swimlanesDao.update({
       entities,

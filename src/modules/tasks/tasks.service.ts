@@ -6,10 +6,15 @@ import { FilterTaskDto } from './dtos/filter-task.dto';
 import { PaginationDto } from 'src/core/dtos/pagination.dto';
 import { Task } from './entities/task.entity';
 import { PaginatedListDto } from 'src/core/dtos/paginated-list.dto';
+import { BoardsService } from '../boards/boards.service';
+import { SwimlanesService } from '../swimlanes/swimlanes.service';
 
 @Injectable()
 export class TasksService {
-  constructor(private readonly tasksDao: TasksDao) {}
+  constructor(
+    private readonly swimlanesService: SwimlanesService,
+    private readonly tasksDao: TasksDao
+  ) {}
 
   async create(creatorId: string, batchCreateTaskDto: BatchCreateTaskDto): Promise<Task[]> {
     const tasks = batchCreateTaskDto.tasks.map((createTaskDto: CreateTaskDto) => new Task({
@@ -46,6 +51,11 @@ export class TasksService {
       if (updateTaskDto.swimlaneId) task.setSwimlaneId(updateTaskDto.swimlaneId);
       task.update();
     });
+
+    const swimlaneIds = new Set(existingTasks.items.map((task) => task.getSwimlaneId()));
+    const swimlanes = await this.swimlanesService.findAll({ filters: { ids: [...swimlaneIds] } });
+    const boardIds = [...new Set(swimlanes.items.map((swimlane) => swimlane.getBoardId()))];
+    BoardsService.onBoardUpdate?.publish(boardIds);
 
     return this.tasksDao.update({ entities: existingTasks.items });
   }

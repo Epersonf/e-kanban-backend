@@ -1,15 +1,25 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { BoardListenWebsocketDto } from './dto/board-listen-websocket.dto';
 import { TokenUtils } from 'src/core/utils/token/token.utils';
 import { Socket } from 'socket.io';
+import { BoardsService } from '../boards/boards.service';
 
 @Injectable()
-export class WebsocketsService {
+export class WebsocketsService implements OnModuleInit, OnModuleDestroy {
+  readonly subscriptionKey = 'ws';
+
+  onModuleInit() {
+    BoardsService.onBoardUpdate?.subscribe(this.subscriptionKey, this.notifyBoard.bind(this));
+  }
+
+  onModuleDestroy() {
+    BoardsService.onBoardUpdate?.unsubscribe(this.subscriptionKey);
+  }
 
   /**
    * Map of boardId to array of userIds that are listening to that board.
    */
-  listeningBoards: Map<string, Socket[]> = new Map<string, Socket[]>();
+  private listeningBoards: Map<string, Socket[]> = new Map<string, Socket[]>();
 
   listenBoard(socket: Socket, listenBoard: BoardListenWebsocketDto) {
     const { token, boardId } = listenBoard;
@@ -48,11 +58,15 @@ export class WebsocketsService {
     }
   }
 
-  notifyBoard<T>(params: {
-    boardId: string;
-    event: string;
-    data?: T;
-  }) {
-    this.listeningBoards.get(params.boardId).forEach((socket) => socket.emit(params.event, params.data));
+  notifyBoard(boardIds: string[]) {
+    boardIds.forEach((boardId) => {
+      const sockets = this.listeningBoards.get(boardId);
+      if (!sockets) return;
+      sockets.forEach((socket) => {
+        socket.emit('boardUpdate', {
+          boardId,
+        });
+      });
+    });
   }
 }
