@@ -5,7 +5,6 @@ import { BatchUpdateTaskDto, UpdateTaskDto } from './dtos/update-task.dto';
 import { FilterTaskDto } from './dtos/filter-task.dto';
 import { PaginationDto } from 'src/core/dtos/pagination.dto';
 import { Task } from './entities/task.entity';
-import { DeleteDto } from 'src/core/dtos/delete.dto';
 import { PaginatedListDto } from 'src/core/dtos/paginated-list.dto';
 
 @Injectable()
@@ -18,6 +17,7 @@ export class TasksService {
       name: createTaskDto.name,
       description: createTaskDto.description,
       creatorId,
+      order: createTaskDto.order,
     }));
     const newTask = await this.tasksDao.create({ entities: tasks });
     return newTask;

@@ -26,6 +26,7 @@ export class SwimlanesDao extends BaseDao<Swimlane> {
       },
       queryFilterAction: (query: Query) => {
         if (params.filters?.boardIds) query.filter(new PropertyFilter("boardId", "IN", params.filters.boardIds));
+        query.order("order", { descending: false });
       }
     });
   }

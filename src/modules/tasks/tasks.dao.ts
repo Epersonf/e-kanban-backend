@@ -28,6 +28,7 @@ export class TasksDao extends BaseDao<Task> {
       },
       queryFilterAction: (query: Query) => {
         if (params.filters?.swimlaneIds) query.filter(new PropertyFilter("swimlaneId", "IN", params.filters.swimlaneIds));
+        query.order("order", { descending: false });
       }
     });
   }

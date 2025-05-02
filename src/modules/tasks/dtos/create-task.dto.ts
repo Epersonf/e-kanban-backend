@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { IsArray, IsString, Length, ValidateNested } from "class-validator";
+import { IsArray, IsNumber, IsString, Length, ValidateNested } from "class-validator";
 
 export class CreateTaskDto {
 
@@ -17,6 +17,10 @@ export class CreateTaskDto {
   @IsString()
   @Length(1, 255)
   description?: string;
+
+  @ApiProperty({ required: false })
+  @IsNumber()
+  order: number;
 }
 
 export class BatchCreateTaskDto {
