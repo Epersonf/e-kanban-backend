@@ -24,6 +24,7 @@ export class SwimlanesService {
       filters: params.filters,
       pagination: params.pagination
     });
+    if (swimlanesPage.items.length === 0) return swimlanesPage;
     
     if (params.populate?.populateWithTasks) {
       const tasks = await this.tasksService.findAll({
