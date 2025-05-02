@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { BoardsService } from './boards.service';
 import { BoardsUserController } from './controllers/boards-user.controller';
 import { BoardsDao } from './boards.dao';
@@ -8,6 +8,9 @@ import { UsersModule } from '../users/users.module';
 @Module({
   controllers: [BoardsUserController],
   providers: [BoardsService, BoardsDao],
-  imports: [SwimlanesModule, UsersModule],
+  imports: [
+    forwardRef(() => SwimlanesModule),
+    UsersModule
+  ],
 })
 export class BoardsModule {}

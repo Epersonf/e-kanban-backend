@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { forwardRef, HttpException, Inject, Injectable } from '@nestjs/common';
 import { BatchCreateBoardDto } from './dto/create-board.dto';
 import { BatchUpdateBoardDto } from './dto/update-board.dto';
 import { FilterBoardDto } from './dto/filter-board.dto';

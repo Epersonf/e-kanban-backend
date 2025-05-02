@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { forwardRef, HttpException, Inject, Injectable } from '@nestjs/common';
 import { BatchCreateSwimlaneDto } from './dto/create-swimlane.dto';
 import { BatchUpdateSwimlaneDto } from './dto/update-swimlane.dto';
 import { PaginationDto } from 'src/core/dtos/pagination.dto';
@@ -13,6 +13,7 @@ import { BoardsService } from '../boards/boards.service';
 export class SwimlanesService {
   constructor(
     private readonly swimlanesDao: SwimlanesDao,
+    @Inject(forwardRef(() => TasksService))
     private readonly tasksService: TasksService,
   ) {}
 
