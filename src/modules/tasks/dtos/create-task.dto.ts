@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { IsArray, IsNumber, IsString, Length, ValidateNested } from "class-validator";
+import { IsArray, IsNumber, IsPositive, IsString, Length, ValidateNested } from "class-validator";
 
 export class CreateTaskDto {
 
@@ -20,6 +20,7 @@ export class CreateTaskDto {
 
   @ApiProperty({ required: false })
   @IsNumber()
+  @IsPositive()
   order: number;
 }
 

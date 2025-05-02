@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { IsArray, IsNumber, IsString, ValidateNested } from "class-validator";
+import { IsArray, IsNumber, IsPositive, IsString, ValidateNested } from "class-validator";
 
 export class CreateSwimlaneDto {
 
@@ -14,6 +14,7 @@ export class CreateSwimlaneDto {
 
   @ApiProperty()
   @IsNumber()
+  @IsPositive()
   order: number;
 
 }
