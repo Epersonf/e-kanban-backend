@@ -1,4 +1,5 @@
-import { WebSocketGateway, SubscribeMessage, MessageBody } from '@nestjs/websockets';
+import { WebSocketGateway, SubscribeMessage, MessageBody, ConnectedSocket } from '@nestjs/websockets';
+import { Socket } from 'socket.io';
 import { WebsocketsService } from './websockets.service';
 import { BoardListenWebsocketDto } from './dto/board-listen-websocket.dto';
 
@@ -7,7 +8,12 @@ export class WebsocketsGateway {
   constructor(private readonly websocketsService: WebsocketsService) {}
 
   @SubscribeMessage('listenBoard')
-  listen(@MessageBody() createWebsocketDto: BoardListenWebsocketDto) {
-    return this.websocketsService.listenBoard(createWebsocketDto);
+  listen(@ConnectedSocket() client: Socket, @MessageBody() createWebsocketDto: BoardListenWebsocketDto) {
+    return this.websocketsService.listenBoard(client, createWebsocketDto);
+  }
+
+  @SubscribeMessage('unlistenBoard')
+  unlisten(@ConnectedSocket() client: Socket, @MessageBody() createWebsocketDto: BoardListenWebsocketDto) {
+    return this.websocketsService.unlistenBoard(client, createWebsocketDto);
   }
 }
