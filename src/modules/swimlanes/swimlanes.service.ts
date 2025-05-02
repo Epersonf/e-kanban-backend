@@ -71,6 +71,7 @@ export class SwimlanesService {
       const updateSwimlaneDto = batchUpdateSwimlaneDto.swimlanes.find(updateSwimlaneDto => updateSwimlaneDto.id === swimlane.getId());
       if (updateSwimlaneDto.name) swimlane.setName(updateSwimlaneDto.name);
       if (updateSwimlaneDto.boardId) swimlane.setBoardId(updateSwimlaneDto.boardId);
+      if (updateSwimlaneDto.order) swimlane.setOrder(updateSwimlaneDto.order);
       swimlane.update();
     });
 

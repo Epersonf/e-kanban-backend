@@ -49,6 +49,7 @@ export class TasksService {
       if (updateTaskDto.name) task.setName(updateTaskDto.name);
       if (updateTaskDto.description) task.setDescription(updateTaskDto.description);
       if (updateTaskDto.swimlaneId) task.setSwimlaneId(updateTaskDto.swimlaneId);
+      if (updateTaskDto.order) task.setOrder(updateTaskDto.order);
       task.update();
     });
 
