@@ -1,1 +1,9 @@
 indexes:
+  - kind: swimlanes
+    properties:
+    - name: boardId
+    - name: order
+  - kind: tasks
+    properties:
+    - name: swimlaneId
+    - name: order
