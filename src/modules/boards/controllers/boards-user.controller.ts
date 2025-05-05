@@ -11,6 +11,7 @@ import { Board } from '../entities/board.entity';
 import { PaginatedListDto } from 'src/core/dtos/paginated-list.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PopulateBoardDto } from '../dto/populate-board.dto';
+import { EditBoardMembersDto } from '../dto/edit-board-members.dto';
 
 @Controller('boards/user')
 @ApiTags('Boards')
@@ -51,6 +52,19 @@ export class BoardsUserController {
   @ApiResponse({ status: 200, type: [Board] })
   update(@Body() batchUpdateBoardDto: BatchUpdateBoardDto): Promise<Board[]> {
     return this.boardsService.update(batchUpdateBoardDto);
+  }
+
+  @Auth()
+  @Patch(':id')
+  @ApiResponse({ status: 200, type: Board })
+  editBoardMembers(
+    @Param('id') boardId: string,
+    @Body() editBoardMembersDto: EditBoardMembersDto
+  ) {
+    return this.boardsService.editBoardMembers({
+      boardId,
+      editBoardMembersDto,
+    });
   }
 
   @Auth()

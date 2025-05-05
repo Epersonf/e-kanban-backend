@@ -59,6 +59,11 @@ export class Board extends EntityMutable {
   
   public setMembers(members: User[]) { this.members = members; }
 
-  public addToBoard(userId: string) { this.memberIds?.push(userId); }
-  public removeFromBoard(userId: string) { this.memberIds?.splice(this.memberIds.indexOf(userId), 1); }
+  public addToBoard(userId: string) {
+    this.memberIds?.push(userId);
+    this.memberIds = [...new Set(this.memberIds)];
+  }
+  public removeFromBoard(userId: string) {
+    this.memberIds = this.memberIds?.filter((memberId) => memberId !== userId);
+  }
 }

@@ -9,6 +9,7 @@ import { PopulateBoardDto } from './dto/populate-board.dto';
 import { SwimlanesService } from '../swimlanes/swimlanes.service';
 import { UsersService } from '../users/users.service';
 import { Action } from 'src/core/delegate/action';
+import { EditBoardMembersDto } from './dto/edit-board-members.dto';
 
 @Injectable()
 export class BoardsService {
@@ -99,6 +100,42 @@ export class BoardsService {
       entities,
     });
   }
+
+  async editBoardMembers(params: {
+    boardId: string,
+    editBoardMembersDto: EditBoardMembersDto,
+  }) {
+    const { boardId, editBoardMembersDto } = params;
+    const { memberEmails, isRemove } = editBoardMembersDto;
+    const board = (await this.boardsDao.findAll({
+      filters: {
+        ids: [boardId],
+      },
+    })).items.at(0);
+    if (!board) throw new HttpException(`Board not found.`, 404);
+
+    const members = await this.usersService.findAll({
+      filters: {
+        emails: memberEmails,
+      },
+    });
+    
+    if (members.items.length !== memberEmails.length) {
+      const notFoundEmails = memberEmails.filter(email => members.items.some(member => member.getEmail() !== email));
+      throw new HttpException(`Some members were not found in the database: ${notFoundEmails.join(', ')}.`, 404);
+    }
+
+    if (isRemove) {
+      members.items.forEach(member => board.removeFromBoard(member.getId()));
+    } else {
+      members.items.forEach(member => board.addToBoard(member.getId()));
+    }
+    board.update();
+    return this.boardsDao.update({
+      entities: [board],
+    });
+  }
+
 
   remove(ids: string[]) {
     return this.boardsDao.delete({

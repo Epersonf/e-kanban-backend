@@ -24,6 +24,7 @@ export class TasksService {
       description: createTaskDto.description,
       creatorId,
       order: createTaskDto.order,
+      ownerIds: createTaskDto.ownerIds,
     }));
     const newTask = await this.tasksDao.create({ entities: tasks });
     return newTask;
@@ -51,6 +52,7 @@ export class TasksService {
       if (updateTaskDto.description) task.setDescription(updateTaskDto.description);
       if (updateTaskDto.swimlaneId) task.setSwimlaneId(updateTaskDto.swimlaneId);
       if (updateTaskDto.order) task.setOrder(updateTaskDto.order);
+      if (updateTaskDto.ownerIds) task.setOwnerIds(updateTaskDto.ownerIds);
       task.update();
     });
 
