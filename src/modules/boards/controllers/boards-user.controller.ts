@@ -55,13 +55,16 @@ export class BoardsUserController {
   }
 
   @Auth()
-  @Patch(':id')
+  @Patch('/board-members/:id')
   @ApiResponse({ status: 200, type: Board })
   editBoardMembers(
+    @Req() req: Request,
     @Param('id') boardId: string,
     @Body() editBoardMembersDto: EditBoardMembersDto
   ) {
+    const user = req.headers['user'] as UserTokenModel;
     return this.boardsService.editBoardMembers({
+      user,
       boardId,
       editBoardMembersDto,
     });

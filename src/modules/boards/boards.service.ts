@@ -10,6 +10,7 @@ import { SwimlanesService } from '../swimlanes/swimlanes.service';
 import { UsersService } from '../users/users.service';
 import { Action } from 'src/core/delegate/action';
 import { EditBoardMembersDto } from './dto/edit-board-members.dto';
+import { UserTokenModel } from 'src/core/utils/token/user-token.model';
 
 @Injectable()
 export class BoardsService {
@@ -102,6 +103,7 @@ export class BoardsService {
   }
 
   async editBoardMembers(params: {
+    user: UserTokenModel,
     boardId: string,
     editBoardMembersDto: EditBoardMembersDto,
   }) {
@@ -113,6 +115,7 @@ export class BoardsService {
       },
     })).items.at(0);
     if (!board) throw new HttpException(`Board not found.`, 404);
+    if (!board.getMemberIds()?.includes(params.user.id)) throw new HttpException(`You are not a member of this board.`, 403);
 
     const members = await this.usersService.findAll({
       filters: {
