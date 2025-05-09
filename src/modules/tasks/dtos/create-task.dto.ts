@@ -25,7 +25,6 @@ export class CreateTaskDto {
 
   @ApiProperty({ required: false })
   @IsArray()
-  @ValidateNested({ each: true })
   @Type(() => String)
   @IsUUID(4, { each: true })
   ownerIds?: string[];
